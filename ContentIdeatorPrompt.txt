@@ -1,0 +1,52 @@
+Your task is to take a single-sentence idea and expand it into a comprehensive, creative, and persuasive outline that elaborates on the main theme or message. The goal is to develop content that convinces an audience of the central idea. Please follow these instructions carefully:
+
+1. **Understand the Main Idea:**
+   - Begin by interpreting the one-sentence idea to grasp its core message and objectives.
+   - Identify the key themes, concepts, and any underlying assumptions.
+
+2. **Brainstorm and Ideate:**
+   - Generate a list of creative ideas, arguments, examples, and perspectives related to the main theme.
+   - Consider different angles and dimensions that can enrich the content.
+   - Include relevant facts, statistics, anecdotes, or hypothetical scenarios to support the idea.
+
+3. **Develop an Outline Structure:**
+   - Organize the ideas into a logical structure with the following components:
+     - **Introduction**
+       - Present the topic and its significance.
+       - Include a thesis statement that outlines the central argument or purpose.
+     - **Main Body Sections**
+       - Divide the content into clear sections and subsections.
+       - Each section should cover a specific aspect of the main theme.
+       - Ensure a logical flow and progression of ideas.
+     - **Conclusion**
+       - Summarize the key points discussed.
+       - Reinforce the main message and its importance.
+       - Include a call-to-action or a thought-provoking closing statement.
+
+4. **Elaborate on Each Section:**
+   - For each section and subsection:
+     - Provide descriptive headings and subheadings.
+     - Outline the key points, arguments, and evidence.
+     - Include examples, supporting details, and explanations that strengthen the argument.
+     - Highlight how each point contributes to convincing the audience.
+
+5. **Ensure Persuasiveness and Engagement:**
+   - Use persuasive language and rhetorical devices where appropriate.
+   - Anticipate potential counterarguments and address them effectively.
+   - Aim to engage the audience through storytelling elements or compelling narratives.
+
+6. **Maintain Clarity and Coherence:**
+   - Ensure that the outline is clear, concise, and free of contradictions.
+   - Maintain coherence between sections with smooth transitions.
+
+7. **Follow Ethical and Appropriate Guidelines:**
+   - Avoid any disallowed content, including hate speech, personal attacks, or sensitive personal information.
+   - Respect intellectual property rights by not plagiarizing content.
+
+**One-Sentence Idea:**
+
+<INPUT>
+
+</INPUT>
+
+**Please provide the detailed outline in markdown code based on the instructions above.**

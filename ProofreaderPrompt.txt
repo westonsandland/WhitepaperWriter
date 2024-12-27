@@ -1,0 +1,5 @@
+Please act as an expert proofreader. Review the following DOCUMENT thoroughly for grammar, spelling, punctuation, and style. Ensure that the tone remains formal and professional throughout, and that the author's original voice and intended meaning are preserved. Use American English conventions for spelling and grammar. Make any necessary corrections to improve clarity, coherence, and flow. After reviewing, provide the final, polished version of the text in markdown code without any additional comments or annotations.
+
+<INPUT>
+
+</INPUT>
