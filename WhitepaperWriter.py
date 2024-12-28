@@ -75,16 +75,20 @@ def static_approach():
     llm = load_llm()
     prompts = load_prompts()
     agents = load_agents(llm, prompts)
-    objective = Path("input.txt").read_text()
+    objective = Path("input.txt").read_text().strip()
+    if not objective:
+        raise ValueError("The input.txt file is empty. Please provide a valid objective.")
 
     final_output = static_orchestration(objective, agents)
     print("Final Output:", final_output)
 
 def dynamic_approach():
-    llm = load_llm()
+    llm = load_llm() # Although this violates DRY, the code will be more confusing/unreadable with the alternative
     prompts = load_prompts()
     agents = load_agents(llm, prompts)
-    objective = Path("input.txt").read_text() # Although this violates DRY, the code will be more confusing/unreadable with the alternative
+    objective = Path("input.txt").read_text().strip()
+    if not objective:
+        raise ValueError("The input.txt file is empty. Please provide a valid objective.")
 
     orchestrator_prompt = prompts["orchestrator"]
     orchestrator_chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(orchestrator_prompt))
