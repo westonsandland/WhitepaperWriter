@@ -1,27 +1,97 @@
+import openai
 from pathlib import Path
-from langchain.agents import Tool, AgentExecutor
+from langchain.agents import Tool
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 
+AZURE_OPENAI_KEY = "redacted"
+AZURE_OPENAI_ENDPOINT = "https://openai-cmh-eastus2.openai.azure.com/"
+AZURE_OPENAI_MODEL_NAME = "o1-preview"
+AZURE_OPENAI_MODEL = "cmh-eastus2-o1-preview"
+AZURE_OPENAI_PREVIEW_API_VERSION = "2024-09-01-preview"
+AZURE_OPENAI_TEMPERATURE = "0.7"
+AZURE_OPENAI_TOP_P = "1"
+
 def load_prompts():
     # Define the folder containing your prompts
-    prompt_dir = Path("/Prompts")
+    prompt_dir = Path("Prompts")
 
-    # Load prompts from files
+    # Load prompts from files, in order, so that static orchestration can use it as-is. In python 3.7+, the order of dictionary items is guaranteed preserved.
     prompts = {name: (prompt_dir / filename).read_text() for name, filename in {
-        "search_optimizer": "SearchOptimizerPrompt.txt",
         "content_ideator": "ContentIdeatorPrompt.txt",
-        "peer_reviewer": "PeerReviewerPrompt.txt",
-        "proofreader": "ProofreaderPrompt.txt",
-        "knowledge_finder": "KnowledgeFinderPrompt.txt",
-        "summarizer": "SummarizerPrompt.txt",
         "content_expander": "ContentExpanderPrompt.txt",
+        "knowledge_finder": "KnowledgeFinderPrompt.txt",
+        "peer_reviewer": "PeerReviewerPrompt.txt",
+        "search_optimizer": "SearchOptimizerPrompt.txt",
+        "proofreader": "ProofreaderPrompt.txt",
+        "summarizer": "SummarizerPrompt.txt",
         "orchestrator": "OrchestratorPrompt.txt"
     }.items()}
 
     return prompts
 
-def static_approach():
-    prompts = load_prompts()
+def load_llm():
+    # This will change the API base to the custom URL provided by CMH, since langchain depends upon openai
+    openai.api_base = AZURE_OPENAI_ENDPOINT
+    openai.api_version = AZURE_OPENAI_PREVIEW_API_VERSION
+
+    #TODO: May need to use "AZURE_OPENAI_MODEL" instead/in tandem
+
+    llm = OpenAI(temperature=AZURE_OPENAI_TEMPERATURE,
+                 top_p=AZURE_OPENAI_TOP_P,
+                 model_name=AZURE_OPENAI_MODEL_NAME,
+                 api_key=AZURE_OPENAI_KEY)
+
+    return llm
+
+def load_agents(llm, prompts):
+    agents = {
+        name: Tool(
+            name=name,
+            func=LLMChain(
+                llm=llm,
+                prompt=PromptTemplate.from_template(prompt)
+            ).run,
+            description=f"{name} agent"
+        )
+        for name, prompt in prompts.items() if name != "orchestrator"
+    }
+    return agents
+
+def static_orchestration(objective, agents):
+    whitepaper = "Whitepaper failed to generate."
+    current_output = objective
+    for agent_tool in agents.values():
+        current_output = agent_tool.func(current_output)
+        if agent_tool.name == "proofreader":
+            whitepaper = current_output
+    return current_output, whitepaper # The "current output" is the summary, and we will also return the whitepaper
+
+def dynamic_orchestration(objective, orchestrator_chain, agents):
+    #TODO: Implement dynamic orchestration
     pass
+
+def static_approach():
+    llm = load_llm()
+    prompts = load_prompts()
+    agents = load_agents(llm, prompts)
+    objective = Path("input.txt").read_text()
+
+    final_output = static_orchestration(objective, agents)
+    print("Final Output:", final_output)
+
+def dynamic_approach():
+    llm = load_llm()
+    prompts = load_prompts()
+    agents = load_agents(llm, prompts)
+    objective = Path("input.txt").read_text() # Although this violates DRY, the code will be more confusing/unreadable with the alternative
+
+    orchestrator_prompt = prompts["orchestrator"]
+    orchestrator_chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(orchestrator_prompt))
+
+    final_output = dynamic_orchestration(objective, orchestrator_chain, agents)
+    print("Final Output:", final_output)
+
+if __name__ == "__main__":
+    static_approach()
