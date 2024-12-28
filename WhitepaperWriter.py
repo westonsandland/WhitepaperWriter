@@ -4,6 +4,7 @@ from langchain.agents import Tool
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
+from functools import partial
 import os
 
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
@@ -47,28 +48,35 @@ def load_llm():
     return llm
 
 def load_agents(llm, prompts):
-    agents = {
-        name: Tool(
-            name=name,
-            func=(PromptTemplate.from_template(prompt) | llm).invoke,
-            description=f"{name} agent"
-        )
-        for name, prompt in prompts.items() if name != "orchestrator"
-    }
+    agents = {}
+    for name, prompt in prompts.items():
+        if name != "orchestrator":
+            def tool_func(input_data, prompt=prompt, name=name):
+                # For debugging purposes, allow us to print the entire input to the LLM
+                rendered_prompt = PromptTemplate.from_template(prompt).format(**input_data)
+                print(f"Rendered Prompt for {name}:\n{rendered_prompt}\n")  # Debugging: Logs the exact prompt sent to the LLM
+                return (PromptTemplate.from_template(prompt) | llm).invoke(input_data)
+
+            agents[name] = Tool(
+                name=name,
+                func=partial(tool_func),
+                description=f"{name} agent"
+            )
     return agents
+
 
 def static_orchestration(objective, agents):
     whitepaper = "Whitepaper failed to generate."
-    current_output = "The simple idea is: \""+objective+"\"."
+    current_output = objective
     for agent_tool in agents.values():
-        current_output = agent_tool.func({"input": current_output})
-        print(agent_tool.name + ": " + current_output.content)
+        current_output = agent_tool.func({"input": current_output}).content
+        print(f"{agent_tool.name}: {current_output}")
         if agent_tool.name == "proofreader":
-            whitepaper = current_output.content
-    return current_output.content, whitepaper # The "current output" is the summary, and we will also return the whitepaper
+            whitepaper = current_output
+    return current_output, whitepaper # The "current output" is the summary, and we will also return the whitepaper
 
 def dynamic_orchestration(objective, orchestrator_chain, agents):
-    #TODO: Implement dynamic orchestration
+    #TODO: Implement
     pass
 
 def static_approach():
@@ -79,8 +87,15 @@ def static_approach():
     if not objective:
         raise ValueError("The input.txt file is empty. Please provide a valid objective.")
 
-    final_output = static_orchestration(objective, agents)
-    print("Final Output:", final_output)
+    summary, whitepaper = static_orchestration(objective, agents)
+    summary_file_path = Path("Output") / "StaticSummary.txt"
+    whitepaper_file_path = Path("Output") / "StaticWhitepaper.txt"
+
+    with open(summary_file_path, "w", encoding="utf-8") as summary_file:
+        summary_file.write(summary)
+
+    with open(whitepaper_file_path, "w", encoding="utf-8") as whitepaper_file:
+        whitepaper_file.write(whitepaper)
 
 def dynamic_approach():
     llm = load_llm() # Although this violates DRY, the code will be more confusing/unreadable with the alternative
