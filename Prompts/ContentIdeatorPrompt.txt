@@ -1,7 +1,7 @@
-Your task is to take a single-sentence idea and expand it into a comprehensive, creative, and persuasive outline that elaborates on the main theme or message. The goal is to develop content that convinces an audience of the central idea. Please follow these instructions carefully:
+Your task is to take a concise idea and expand it into a comprehensive, creative, and persuasive outline that elaborates on the main theme or message. The goal is to develop content that convinces an audience of the central idea. Please follow these instructions carefully:
 
 1. **Understand the Main Idea:**
-   - Begin by interpreting the one-sentence idea to grasp its core message and objectives.
+   - Begin by interpreting the idea to grasp its core message and objectives.
    - Identify the key themes, concepts, and any underlying assumptions.
 
 2. **Brainstorm and Ideate:**
