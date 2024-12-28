@@ -53,8 +53,8 @@ def load_agents(llm, prompts):
         if name != "orchestrator":
             def tool_func(input_data, prompt=prompt, name=name):
                 # For debugging purposes, allow us to print the entire input to the LLM
-                rendered_prompt = PromptTemplate.from_template(prompt).format(**input_data)
-                print(f"Rendered Prompt for {name}:\n{rendered_prompt}\n")  # Debugging: Logs the exact prompt sent to the LLM
+                # rendered_prompt = PromptTemplate.from_template(prompt).format(**input_data)
+                #print(f"Rendered Prompt for {name}:\n{rendered_prompt}\n")
                 return (PromptTemplate.from_template(prompt) | llm).invoke(input_data)
 
             agents[name] = Tool(
@@ -70,7 +70,7 @@ def static_orchestration(objective, agents):
     current_output = objective
     for agent_tool in agents.values():
         current_output = agent_tool.func({"input": current_output}).content
-        print(f"{agent_tool.name}: {current_output}")
+        #print(f"{agent_tool.name}: {current_output}")
         if agent_tool.name == "proofreader":
             whitepaper = current_output
     return current_output, whitepaper # The "current output" is the summary, and we will also return the whitepaper
