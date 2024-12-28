@@ -51,10 +51,7 @@ def load_agents(llm, prompts):
     agents = {}
     for name, prompt in prompts.items():
         if name != "orchestrator":
-            def tool_func(input_data, prompt=prompt, name=name):
-                # For debugging purposes, allow us to print the entire input to the LLM
-                # rendered_prompt = PromptTemplate.from_template(prompt).format(**input_data)
-                #print(f"Rendered Prompt for {name}:\n{rendered_prompt}\n")
+            def tool_func(input_data, prompt=prompt):
                 return (PromptTemplate.from_template(prompt) | llm).invoke(input_data)
 
             agents[name] = Tool(
