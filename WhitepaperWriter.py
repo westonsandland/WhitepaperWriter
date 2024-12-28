@@ -3,11 +3,12 @@ from pathlib import Path
 from langchain.agents import Tool
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
+from langchain_openai import ChatOpenAI
+import os
 
-AZURE_OPENAI_KEY = "redacted"
+AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 AZURE_OPENAI_ENDPOINT = "https://openai-cmh-eastus2.openai.azure.com/"
-AZURE_OPENAI_MODEL_NAME = "o1-preview"
+AZURE_OPENAI_MODEL_NAME = "o1-preview" # Note: we might not want to be using a chat model for this task.
 AZURE_OPENAI_MODEL = "cmh-eastus2-o1-preview"
 AZURE_OPENAI_PREVIEW_API_VERSION = "2024-09-01-preview"
 AZURE_OPENAI_TEMPERATURE = "0.7"
@@ -38,7 +39,7 @@ def load_llm():
 
     #TODO: May need to use "AZURE_OPENAI_MODEL" instead/in tandem
 
-    llm = OpenAI(temperature=AZURE_OPENAI_TEMPERATURE,
+    llm = ChatOpenAI(temperature=1, # There is a (possible bug?) problem that only lets me set the temperature to 1.
                  top_p=AZURE_OPENAI_TOP_P,
                  model_name=AZURE_OPENAI_MODEL_NAME,
                  api_key=AZURE_OPENAI_KEY)
@@ -49,10 +50,7 @@ def load_agents(llm, prompts):
     agents = {
         name: Tool(
             name=name,
-            func=LLMChain(
-                llm=llm,
-                prompt=PromptTemplate.from_template(prompt)
-            ).run,
+            func=(PromptTemplate.from_template(prompt) | llm).invoke,
             description=f"{name} agent"
         )
         for name, prompt in prompts.items() if name != "orchestrator"
@@ -63,10 +61,10 @@ def static_orchestration(objective, agents):
     whitepaper = "Whitepaper failed to generate."
     current_output = objective
     for agent_tool in agents.values():
-        current_output = agent_tool.func(current_output)
+        current_output = agent_tool.func({"input": current_output})
         if agent_tool.name == "proofreader":
-            whitepaper = current_output
-    return current_output, whitepaper # The "current output" is the summary, and we will also return the whitepaper
+            whitepaper = current_output.content
+    return current_output.content, whitepaper # The "current output" is the summary, and we will also return the whitepaper
 
 def dynamic_orchestration(objective, orchestrator_chain, agents):
     #TODO: Implement dynamic orchestration
