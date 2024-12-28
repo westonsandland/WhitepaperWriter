@@ -28,5 +28,5 @@ You are a Search Optimization Specialist tasked with enhancing the following doc
 Your goal is to boost the document's discoverability online while maintaining its quality, relevance, and integrity. Ensure that all optimizations enhance the user experience and comply with best practices. Apply these optimizations to the content below.
 
 <INPUT>
-
+{input}
 </INPUT>

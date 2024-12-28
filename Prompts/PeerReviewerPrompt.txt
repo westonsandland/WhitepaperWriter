@@ -61,5 +61,5 @@ Educational Role: Aims to support the author's development through constructive 
 Given these characteristics, please review the specific piece of content below:
 
 <INPUT>
-
+{input}
 </INPUT>

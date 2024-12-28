@@ -46,7 +46,7 @@ Your task is to take a concise idea and expand it into a comprehensive, creative
 **One-Sentence Idea:**
 
 <INPUT>
-
+{input}
 </INPUT>
 
 **Please provide the detailed outline in markdown code based on the instructions above.**
