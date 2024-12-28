@@ -1,0 +1,7 @@
+In Medicare Advantage, I'd like to discuss the impact of 2026 Member Notices on Supplemental Benefit Utilization.  There's a general consensus in the actuarial community that the impact should be negligible because they will only go to members with zero utilization. However, this may not always be the case, but I also don't have a good sense for what the impact may be on non-utilizers.  The impact could vary by:
+
+-Benefit based on ease of use - for example OTC
+
+-Limitations on the need for services – for example, not everyone needs hearing aids or transportation
+
+-Benefit eligibility (SSBCIs)
