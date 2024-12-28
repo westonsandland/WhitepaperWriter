@@ -108,8 +108,15 @@ def dynamic_approach():
     orchestrator_prompt = prompts["orchestrator"]
     orchestrator_chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(orchestrator_prompt))
 
-    final_output = dynamic_orchestration(objective, orchestrator_chain, agents)
-    print("Final Output:", final_output)
+    summary, whitepaper = dynamic_orchestration(objective, orchestrator_chain, agents)
+    summary_file_path = Path("Output") / "DynamicSummary.txt"
+    whitepaper_file_path = Path("Output") / "DynamicWhitepaper.txt"
+
+    with open(summary_file_path, "w", encoding="utf-8") as summary_file:
+        summary_file.write(summary)
+
+    with open(whitepaper_file_path, "w", encoding="utf-8") as whitepaper_file:
+        whitepaper_file.write(whitepaper)
 
 if __name__ == "__main__":
     static_approach()
