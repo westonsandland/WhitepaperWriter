@@ -59,9 +59,10 @@ def load_agents(llm, prompts):
 
 def static_orchestration(objective, agents):
     whitepaper = "Whitepaper failed to generate."
-    current_output = objective
+    current_output = "The simple idea is: \""+objective+"\"."
     for agent_tool in agents.values():
         current_output = agent_tool.func({"input": current_output})
+        print(agent_tool.name + ": " + current_output.content)
         if agent_tool.name == "proofreader":
             whitepaper = current_output.content
     return current_output.content, whitepaper # The "current output" is the summary, and we will also return the whitepaper
