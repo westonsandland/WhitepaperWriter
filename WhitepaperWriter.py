@@ -1,8 +1,7 @@
 import openai
 from pathlib import Path
-from langchain.agents import Tool
+from langchain.tools import Tool, StructuredTool
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from functools import partial
 import os
