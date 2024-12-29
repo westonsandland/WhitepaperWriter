@@ -1,4 +1,4 @@
-Develpoment Notes:
+Development Notes:
 
 - For my static approach, I figured that SEO optimization should happen before proofreading, but after peer reviewing. Depending on how important SEO is, it can be placed at a different step in the process.
 - I wasn't able to get the API to accept a custom temperature. I believe this is a quirk with the custom endpoint.
@@ -8,4 +8,5 @@ Develpoment Notes:
 - Some people consider using "while True" to be controversial when it comes to style. It could be refactored out.
 - A decent chunk of code is duplicated between the dynamic and static approaches, I left it this way for overall conciseness as splitting those things into their own functions seems to add unnecessary complexity.
 - Variables could be renamed for better readability. This could be better informed by how this program would be utilized in the future (what sorts of ideas will we be feeding it?).
+- Refactoring the code into several different files may be a good idea. Additionally, a significantly more object-oriented structure could help in the case that this program will continue to be developed and extended for other use cases.
 - The quality of output may benefit massively from changes to the agent prompts. In a scenario where the quality of result has a high financial impact, A/B testing with many iterations may be wise. It may be worth hiring someone specifically for that purpose.
