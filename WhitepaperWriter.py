@@ -160,8 +160,8 @@ def static_approach():
         raise ValueError("The input.txt file is empty. Please provide a valid objective.")
 
     summary, whitepaper = static_orchestration(objective, agents)
-    summary_file_path = Path("Output") / "StaticSummary.txt"
-    whitepaper_file_path = Path("Output") / "StaticWhitepaper.txt"
+    summary_file_path = Path("Output") / "StaticSummary.md"
+    whitepaper_file_path = Path("Output") / "StaticWhitepaper.md"
 
     with open(summary_file_path, "w", encoding="utf-8") as summary_file:
         summary_file.write(summary)
@@ -208,8 +208,8 @@ def dynamic_approach():
     orchestrator_tool = create_orchestrator_tool(orchestrator_prompt, llm)
 
     summary, whitepaper = dynamic_orchestration(objective, orchestrator_tool, agents)
-    summary_file_path = Path("Output") / "DynamicSummary.txt"
-    whitepaper_file_path = Path("Output") / "DynamicWhitepaper.txt"
+    summary_file_path = Path("Output") / "DynamicSummary.md"
+    whitepaper_file_path = Path("Output") / "DynamicWhitepaper.md"
 
     with open(summary_file_path, "w", encoding="utf-8") as summary_file:
         summary_file.write(summary)
