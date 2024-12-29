@@ -108,29 +108,36 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
 
         print(f"Orchestrator Response:\n{orchestrator_response}\n")
 
-        if "Task Complete" in orchestrator_response.content and not remaining_agents:
-            break
+        # Safety check: Handle "Task Complete" with unused agents
+        if "Task Complete" in orchestrator_response.content:
+            if remaining_agents:
+                print(f"Orchestrator prematurely declared 'Task Complete'. Assigning an unused agent: {next(iter(remaining_agents))}")
+                next_agent_name = next(iter(remaining_agents))  # Assign one of the unused agents
+                agent_input = "Automatically assigned by system to ensure completion."  # Default input
+            else:
+                break
+        else:
+            # Parse Orchestrator's decision
+            lines = orchestrator_response.content.splitlines()
+            next_agent_name = None
+            agent_input = []
+            inside_input_tag = False
 
-        lines = orchestrator_response.content.splitlines()
-        next_agent_name = None
-        agent_input = []
-        inside_input_tag = False
+            for line in lines:
+                line = line.strip()
+                if line.startswith("<NEXT_AGENT>") and line.endswith("</NEXT_AGENT>"):
+                    next_agent_name = line[len("<NEXT_AGENT>"): -len("</NEXT_AGENT>")].strip()
+                elif line.startswith("<INPUT>"):
+                    inside_input_tag = True
+                    agent_input.append(line[len("<INPUT>"):].strip())
+                elif line.endswith("</INPUT>"):
+                    inside_input_tag = False
+                    agent_input.append(line[: -len("</INPUT>")].strip())
+                elif inside_input_tag:
+                    agent_input.append(line)
 
-        for line in lines:
-            line = line.strip()
-            if line.startswith("<NEXT_AGENT>") and line.endswith("</NEXT_AGENT>"):
-                next_agent_name = line[len("<NEXT_AGENT>"): -len("</NEXT_AGENT>")].strip()
-            elif line.startswith("<INPUT>"):
-                inside_input_tag = True
-                agent_input.append(line[len("<INPUT>"):].strip())
-            elif line.endswith("</INPUT>"):
-                inside_input_tag = False
-                agent_input.append(line[: -len("</INPUT>")].strip())
-            elif inside_input_tag:
-                agent_input.append(line)
-
-        # Join multiline input into a single string
-        agent_input = "\n".join(agent_input).strip()
+            # Join multiline input into a single string
+            agent_input = "\n".join(agent_input).strip()
 
         # Ensure that there is a next task to do
         if not next_agent_name or not agent_input:
