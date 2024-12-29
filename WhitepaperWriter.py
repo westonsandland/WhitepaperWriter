@@ -80,7 +80,7 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
         "peer_reviewer": "Reviews content for accuracy and coherence.",
         "search_optimizer": "Optimizes content for SEO and online discoverability.",
         "proofreader": "Polishes content for grammar, style, and clarity.",
-        "summarizer": "Summarizes detailed content into concise executive summaries."
+        "summarizer": "Summarizes detailed content into concise executive summaries." # It's possible it is more pragmatic to remove summarizer as an option.
     }
 
     task_context = {
