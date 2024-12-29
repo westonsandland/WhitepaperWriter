@@ -1,3 +1,5 @@
+To run WhitepaperWriter, you will need to set your AZURE_OPENAI_KEY environment variable, as well as install necessary packages using pip.
+
 Development Notes:
 
 - For my static approach, I figured that SEO optimization should happen before proofreading, but after peer reviewing. Depending on how important SEO is, it can be placed at a different step in the process.
