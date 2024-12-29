@@ -8,14 +8,13 @@ import os
 
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 AZURE_OPENAI_ENDPOINT = "https://openai-cmh-eastus2.openai.azure.com/"
-AZURE_OPENAI_MODEL_NAME = "o1-preview" # Note: we might not want to be using a chat model for this task.
+AZURE_OPENAI_MODEL_NAME = "o1-preview"
 AZURE_OPENAI_MODEL = "cmh-eastus2-o1-preview"
 AZURE_OPENAI_PREVIEW_API_VERSION = "2024-09-01-preview"
 AZURE_OPENAI_TEMPERATURE = "0.7"
 AZURE_OPENAI_TOP_P = "1"
 
 def load_prompts():
-    # Define the folder containing your prompts
     prompt_dir = Path("Prompts")
 
     # Load prompts from files, in order, so that static orchestration can use it as-is. In python 3.7+, the order of dictionary items is guaranteed preserved.
@@ -36,8 +35,6 @@ def load_llm():
     # This will change the API base to the custom URL provided by CMH, since langchain depends upon openai
     openai.api_base = AZURE_OPENAI_ENDPOINT
     openai.api_version = AZURE_OPENAI_PREVIEW_API_VERSION
-
-    #TODO: May need to use "AZURE_OPENAI_MODEL" instead/in tandem
 
     llm = ChatOpenAI(temperature=1, # There is a (possible bug?) problem that only lets me set the temperature to 1.
                  top_p=AZURE_OPENAI_TOP_P,
@@ -97,7 +94,6 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
     )
 
     while True:
-        # Prepare input for the Orchestrator
         orchestrator_input = {
             "objective": task_context["objective"],
             "current_output": task_context["current_output"] or "No progress has been made yet.",
@@ -108,12 +104,10 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
 
         print(f"Orchestrator Input:\n{orchestrator_input}\n")  # Debugging: Log input to Orchestrator
 
-        # Call the Orchestrator tool
         orchestrator_response = orchestrator_tool.func(**orchestrator_input)
 
         print(f"Orchestrator Response:\n{orchestrator_response}\n")
 
-        # Parse Orchestrator's decision
         if "Task Complete" in orchestrator_response.content and not remaining_agents:
             break
 
@@ -128,17 +122,17 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
                 next_agent_name = line[len("<NEXT_AGENT>"): -len("</NEXT_AGENT>")].strip()
             elif line.startswith("<INPUT>"):
                 inside_input_tag = True
-                agent_input.append(line[len("<INPUT>"):].strip())  # Collect the first part of the input
+                agent_input.append(line[len("<INPUT>"):].strip())
             elif line.endswith("</INPUT>"):
                 inside_input_tag = False
-                agent_input.append(line[: -len("</INPUT>")].strip())  # Collect the last part of the input
+                agent_input.append(line[: -len("</INPUT>")].strip())
             elif inside_input_tag:
-                agent_input.append(line)  # Collect lines within the <INPUT> tag
+                agent_input.append(line)
 
         # Join multiline input into a single string
         agent_input = "\n".join(agent_input).strip()
 
-        # Ensure both next_agent_name and agent_input are parsed
+        # Ensure that there is a next task to do
         if not next_agent_name or not agent_input:
             raise ValueError("Orchestrator response does not specify the next agent or input.")
 
@@ -149,7 +143,7 @@ def dynamic_orchestration(objective, orchestrator_tool, agents):
             task_context["completed_tasks"].append(next_agent_name)
             remaining_agents.discard(next_agent_name)
 
-            # Special handling for proofreader and summarizer outputs
+            # Proofreader and summarizer outputs are what we will ultimately return
             if next_agent_name == "proofreader":
                 whitepaper = task_context["current_output"]
             elif next_agent_name == "summarizer":
