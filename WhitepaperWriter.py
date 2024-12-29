@@ -224,4 +224,5 @@ def dynamic_approach():
         whitepaper_file.write(whitepaper)
 
 if __name__ == "__main__":
+    static_approach()
     dynamic_approach()
