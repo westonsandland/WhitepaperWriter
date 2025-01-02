@@ -14,14 +14,7 @@ You are a Search Optimization Specialist tasked with enhancing the following doc
 -Integrate keywords seamlessly to maintain a natural writing style.
 -Avoid keyword stuffing or any practices that could detract from the reader's experience.
 
-4.E-A-T Compliance (Expertise, Authoritativeness, Trustworthiness):
--Enhance the content to demonstrate expertise and authority on the subject matter.
--Ensure all information is accurate, reliable, and trustworthy.
-
-5.Avoiding Duplicate Content:
--Check the content to ensure it is original and not duplicated elsewhere, which can negatively impact SEO.
-
-6.Ethical SEO Practices:
+4.Ethical SEO Practices:
 -Adhere strictly to white-hat SEO techniques.
 -Avoid any manipulative practices that violate search engine guidelines.
 
