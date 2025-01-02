@@ -54,10 +54,6 @@ As a Knowledge Finder, your primary goal is to enhance and enrich raw input cont
 -Double-check all added information for accuracy and relevance.
 -Ensure that the content flows logically and that transitions between sections are smooth.
 
-##Audience Consideration:
--Use language and terminology appropriate for the intended audience's knowledge level.
--Explain technical terms or jargon if the audience may be unfamiliar with them.
-
 <INPUT>
 {input}
 </INPUT>

@@ -19,8 +19,8 @@
    - Incorporate headings and subheadings as necessary to organize the content.
 
 4. ### Engage the Reader
-   - Use clear, concise, and accessible language appropriate for the target audience.
-   - Incorporate engaging elements such as interesting facts, anecdotes, or rhetorical questions where appropriate.
+   - Use clear, concise, and accessible language appropriate for a broad audience.
+   - Use technical language where appropriate, but avoid jargon or niche terms.
    - Aim to inform and captivate the reader, keeping their interest throughout the content.
 
 5. ### Adhere to Writing Conventions
