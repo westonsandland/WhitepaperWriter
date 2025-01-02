@@ -33,7 +33,7 @@ def load_llm():
         top_p=1.0,
         azure_deployment=AZURE_OPENAI_MODEL,
         azure_endpoint=AZURE_OPENAI_ENDPOINT,
-        openai_api_key=AZURE_OPENAI_API_KEY,
+        openai_api_key=AZURE_OPENAI_KEY,
         openai_api_version=AZURE_OPENAI_PREVIEW_API_VERSION
     )
 
