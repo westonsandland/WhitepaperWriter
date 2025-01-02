@@ -2,17 +2,14 @@ import openai
 from pathlib import Path
 from langchain.tools import Tool, StructuredTool
 from langchain.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from functools import partial
 import os
 
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 AZURE_OPENAI_ENDPOINT = "https://openai-cmh-eastus2.openai.azure.com/"
-AZURE_OPENAI_MODEL_NAME = "o1-preview"
 AZURE_OPENAI_MODEL = "cmh-eastus2-o1-preview"
-AZURE_OPENAI_PREVIEW_API_VERSION = "2024-09-01-preview"
-AZURE_OPENAI_TEMPERATURE = "0.7"
-AZURE_OPENAI_TOP_P = "1"
+AZURE_OPENAI_PREVIEW_API_VERSION = "2023-07-01-preview"
 
 def load_prompts():
     prompt_dir = Path("Prompts")
@@ -32,14 +29,13 @@ def load_prompts():
     return prompts
 
 def load_llm():
-    # This will change the API base to the custom URL provided by CMH, since langchain depends upon openai
-    openai.api_base = AZURE_OPENAI_ENDPOINT
-    openai.api_version = AZURE_OPENAI_PREVIEW_API_VERSION
-
-    llm = ChatOpenAI(temperature=1, # There is a (possible bug?) problem that only lets me set the temperature to 1.
-                 top_p=AZURE_OPENAI_TOP_P,
-                 model_name=AZURE_OPENAI_MODEL_NAME,
-                 api_key=AZURE_OPENAI_KEY)
+    llm = AzureChatOpenAI(temperature=1.0, # There is a (possible bug?) problem that only lets me set the temperature to 1.
+        top_p=1.0,
+        azure_deployment=AZURE_OPENAI_MODEL,
+        azure_endpoint=AZURE_OPENAI_ENDPOINT,
+        openai_api_key=AZURE_OPENAI_API_KEY,
+        openai_api_version=AZURE_OPENAI_PREVIEW_API_VERSION
+    )
 
     return llm
 
