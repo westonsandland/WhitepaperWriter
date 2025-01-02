@@ -58,7 +58,7 @@ Prioritization: Distinguishes between major issues and minor suggestions.
 Quality Enhancement: Focused on improving the overall quality and credibility of the content.
 Educational Role: Aims to support the author's development through constructive feedback.
 
-Given these characteristics, please review the specific piece of content below:
+Given these characteristics, please review the input below and apply any edits that you see fit, returning the full, updated piece of content:
 
 <INPUT>
 {input}
