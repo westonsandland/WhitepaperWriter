@@ -10,4 +10,14 @@ Development Notes:
 - Variables could be renamed for better readability. This could be better informed by how this program would be utilized in the future (what sorts of ideas will we be feeding it?).
 - Refactoring the code into several different files may be a good idea. Additionally, a significantly more object-oriented structure could help in the case that this program will continue to be developed and extended for other use cases.
 - Some people consider using "while True" to be stylistically controversial. It could be refactored out.
-- The quality of output may benefit massively from changes to the agent prompts. In a scenario where the quality of result has a high financial impact, A/B testing with many iterations may be wise. It may be worth hiring someone specifically for that purpose.
+
+Prompt/Agent Notes:
+
+- "Brainstorming Agent" to start things off? Split up Ideator into two
+- Should we be introduce an agent that specifically trims and/or reorders content for better logical flow? "Peer reviewing" seems like a separate task.
+- My general strategy with the prompts was to be a bit more specific in what I am asking for. A lot of the language is quite nebulous. There's still further progress to be made on that.
+- There were several references to the audience in these prompts. I don't think the agents have access to that information, currently. I edited them accordingly. This could be a potential future feature that also factors into the SEO'd/Summarized dichotomy.
+- An approach that may benefit the output, but would increase the cost as well as complexity, is to add a more "conversational" flow to the agents rather than a simple input/output. Such a flow would justify a chat model being used. An example of this would be the Peer Reviewer: It gets fed the content to review, it replies with its suggested edits, and then another agent applies those edits. As my current approach doesn't use "suggestions", I am aiming to remove references to that.
+- It's important that agents are properly equipped to handle the tasks given, and we should not be asking them to do things that they are not capable of. Preventing plagairism, for instance, may be outside the wheelhouse of these agents, without a custom tool made to intentionally achieve this purpose.
+- We need to make sure the scope of what we are asking the agents is limited so that each agent has one purpose. Overlapping responsibilities can cause the output to be unnecessarily verbose or not reader friendly.
+- The quality of output may benefit massively from changes to the agent prompts. In a real-world scenario where the quality of result has a high financial impact, A/B testing with many iterations may be wise. It may be worth hiring someone specifically for that purpose.
