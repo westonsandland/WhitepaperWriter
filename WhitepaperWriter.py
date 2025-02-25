@@ -7,7 +7,7 @@ from functools import partial
 import os
 
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
-AZURE_OPENAI_ENDPOINT = "https://openai-cmh-eastus2.openai.azure.com/"
+AZURE_OPENAI_ENDPOINT = "YOUR_ENDPOINT"
 AZURE_OPENAI_MODEL = "cmh-eastus2-o1-preview"
 AZURE_OPENAI_PREVIEW_API_VERSION = "2023-07-01-preview"
 
